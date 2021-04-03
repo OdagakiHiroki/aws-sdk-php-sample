@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  vue:
+    container_name: vue
+    working_dir: /var/www/vue-sample
+    build:
+      context: ./docker/vue
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./app/vue:/var/www/vue-sample
+    privileged: true
+    tty: true
+    stdin_open: true
+
+  laravel:
+    container_name: laravel
+    working_dir: /var/www/laravel-sample
+    build:
+      context: ./docker/laravel
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./app/laravel:/var/www/laravel-sample
+      - ./logs:/var/log/apache2
+
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    ports:
+      - 13306:3306
+    volumes:
+      # 永続化ディレクトリの設定
+      - ./docker/mysql/data:/var/lib/mysql
+      # ログ出力の設定
+      - ./logs:/var/log/mysql
+      # mysqlのconfig
+      - ./docker/mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - TZ=${TZ}
