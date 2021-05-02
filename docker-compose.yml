@@ -39,6 +39,8 @@ services:
       - ./logs:/var/log/mysql
       # mysqlのconfig
       - ./docker/mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
+      # # 起動時のSQL
+      # - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
     environment:
       - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_USER=${DB_USER}
