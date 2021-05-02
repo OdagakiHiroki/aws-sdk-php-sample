@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/login', 'Api\AuthController@createToken');
 
-Route::get('sample', 'Api\SampleController@index');
+Route::middleware('auth:sanctum')->post('/logout', 'Api\AuthController@deleteToken');
+
+Route::middleware('auth:sanctum')->get('/sample', 'Api\SampleController@index');
