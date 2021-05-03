@@ -18,16 +18,15 @@ class AuthController extends Controller {
             ], 401);
         }
 
-        $accessToken = Auth::user()->createToken('authToken')->plainTextToken;
+        $plainTextToken = Auth::user()->createToken('authToken')->plainTextToken;
+        list(, $accessToken) = explode('|', $plainTextToken);
         return response()->json([
             'access_token' => $accessToken
         ]);
     }
 
     public function deleteToken(Request $request) {
-        $res = $request->user()->currentAccessToken()->delete();
-        return response()->json([
-            'logoutRes' => $res,
-        ]);
+        $request->user()->currentAccessToken()->delete();
+        return;
     }
 }

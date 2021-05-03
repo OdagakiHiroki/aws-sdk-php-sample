@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 class SampleController extends Controller
 {
     public function index() {
-        return response('sample');
+        return response()->json([
+            'sample' => 'Laravel APIから取得したsampleデータ'
+        ]);
     }
 }
